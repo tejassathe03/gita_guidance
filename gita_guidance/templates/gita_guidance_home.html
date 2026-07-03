@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhagavad Gita - Life Guidance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #FFB366 0%, #FF9933 50%, #CC6600 100%);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -2;
+        }
+
+        /* Overlay for readability */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        /* THE DIVINE SUN BACKGROUND */
+        .bg-battlefield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            
+            background-image: 
+                radial-gradient(
+                    ellipse farthest-corner at 100% 0%, 
+                    #FFFFFF 0%,        /* Pure white center */
+                    #FFFFFF 15%,       /* Sustained pure white zone to keep the top-right completely solid */
+                    #FFFDF0 28%,       /* Ultra-smooth transition out of the white core */
+                    #FFE3B3 48%,       /* Soft, clear golden-saffron wash */
+                    #FF9933 75%,       /* True vibrant saffron across the main body */
+                    #FF7300 92%,       /* Gradual darkening */
+                    #E65100 100%       /* Deep, majestic saturated saffron at the bottom-left */
+                );
+        }
+
+        .container {
+            background: rgba(250, 248, 243, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+            padding: 50px;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            border: 3px solid #8b4513;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8b4513;
+        }
+
+        .header h1 {
+            color: #8b4513;
+            font-size: 2.8em;
+            margin: 15px 0 10px 0;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .header .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .header .sanskrit {
+            color: #8b4513;
+            font-size: 1.1em;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            font-family: 'Noto Sans Devanagari', serif;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-section label {
+            display: block;
+            margin-bottom: 12px;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 1.15em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        textarea {
+            flex: 1;
+            min-width: 250px;
+            padding: 18px;
+            font-size: 1em;
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s;
+            background: #fafaf7;
+            color: #2c2c2c;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #d4a574;
+            background: #ffffff;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05), 0 0 15px rgba(139, 69, 19, 0.3);
+        }
+
+        button {
+            padding: 16px 45px;
+            font-size: 1.1em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #8b4513 100%);
+            color: #faf8f3;
+            border: 2px solid #6b3410;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            align-self: flex-end;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.6);
+            background: linear-gradient(135deg, #a0522d 0%, #cd853f 50%, #a0522d 100%);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+            animation: pulse 1.5s infinite;
+        }
+
+        .spinner {
+            border: 4px solid #e8d9b8;
+            border-top: 4px solid #8b4513;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .loading p {
+            margin-top: 15px;
+            color: #8b4513;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .output-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .output-section.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .verse-section {
+            background: linear-gradient(135deg, #fef5e7 0%, #ffffff 100%);
+            border-left: 6px solid #8b4513;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .verse-reference {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: #8b4513;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .verse-text {
+            font-size: 1.1em;
+            color: #333;
+            font-style: italic;
+            line-height: 1.8;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(139, 69, 19, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid #d4a574;
+        }
+
+        .verse-meaning {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.7;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px solid #8b4513;
+        }
+
+        .wisdom-section {
+            background: linear-gradient(135deg, #f5f1e8 0%, #fafaf7 100%);
+            border-left: 6px solid #8b4513;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .wisdom-title {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: #8b4513;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .wisdom-text {
+            font-size: 1em;
+            color: #444;
+            line-height: 1.8;
+        }
+
+        .suggestions-section {
+            background: linear-gradient(135deg, #f5f1e8 0%, #fafaf7 100%);
+            border-left: 6px solid #8b4513;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestions-title {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: #8b4513;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .suggestions-list {
+            list-style: none;
+        }
+
+        .suggestions-list li {
+            background: rgba(139, 69, 19, 0.05);
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid #d4a574;
+            border-radius: 6px;
+            color: #333;
+            line-height: 1.7;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .suggestions-list li:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateX(5px);
+        }
+
+        .suggestions-list li::before {
+            content: '✦ ';
+            color: #8b4513;
+            font-weight: 800;
+            margin-right: 8px;
+        }
+
+        .reflection-section {
+            background: linear-gradient(135deg, #fffaf0 0%, #fff6e6 100%);
+            border-left: 6px solid #8b4513;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 18px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+        }
+
+        .reflection-title {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: #8b4513;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .reflection-text {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.7;
+        }
+        .error-section {
+            display: none;
+            background: linear-gradient(135deg, #ffe0e0 0%, #fff5f5 100%);
+            border-left: 6px solid #d9534f;
+            padding: 20px;
+            border-radius: 12px;
+            color: #c92a2a;
+            border: 2px solid #f0a8a8;
+            margin-top: 20px;
+        }
+
+        .error-section.show {
+            display: block;
+        }
+
+        .error-message {
+            font-weight: 600;
+        }
+
+        .example-box strong {
+            color: #8b4513;
+            display: block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-box p {
+            color: #666;
+            font-size: 0.95em;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            textarea {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="bg-battlefield"></div>
+    <div class="container">
+        <div class="header">
+            <h1>Bhagavad Gita Wisdom</h1>
+            <p class="subtitle">Find guidance for life's challenges through timeless wisdom</p>
+        </div>
+
+        <div class="input-section">
+            <label for="problem-input">Describe Your Challenge in Life</label>
+            <div class="input-group">
+                <textarea id="problem-input" placeholder="Share your real-life challenge, dilemma, or question. The Gita will provide wisdom and practical guidance..." spellcheck="false"></textarea>
+                <button id="submit-btn" onclick="submitProblem()">Get Guidance</button>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Seeking wisdom from the Bhagavad Gita...</p>
+        </div>
+
+        <div class="output-section" id="output-section">
+            <div class="verse-section" id="verse-output"></div>
+            <div class="wisdom-section" id="wisdom-output"></div>
+            <div class="suggestions-section" id="suggestions-output"></div>
+            <div class="reflection-section" id="reflection-output"></div>
+        </div>
+
+        <div class="error-section" id="error-section">
+            <div class="error-message" id="error-output"></div>
+        </div>
+    </div>
+
+    <script>
+        const problemInput = document.getElementById('problem-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const loading = document.getElementById('loading');
+        const outputSection = document.getElementById('output-section');
+        const errorSection = document.getElementById('error-section');
+
+        problemInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                submitProblem();
+            }
+        });
+
+        async function submitProblem() {
+            const problem = problemInput.value.trim();
+
+            if (!problem) {
+                showError('Please describe your challenge or question');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            outputSection.classList.remove('show');
+            errorSection.classList.remove('show');
+
+            try {
+                const response = await fetch('/gita-guidance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ problem: problem })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayGuidance(data);
+                    outputSection.classList.add('show');
+                    errorSection.classList.remove('show');
+                } else {
+                    showError(data.error || 'An error occurred');
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('error-output').textContent = '❌ ' + message;
+            errorSection.classList.add('show');
+            outputSection.classList.remove('show');
+        }
+
+        function displayGuidance(data) {
+            const verse = data.suggested_verse;
+
+            // Display verse
+            document.getElementById('verse-output').innerHTML = `
+                <div class="verse-reference">
+                    Bhagavad Gita ${verse.chapter}.${verse.verse}
+                </div>
+                <div class="verse-text">${escapeHtml(verse.text)}</div>
+                <div class="verse-meaning"><strong>Meaning:</strong> ${escapeHtml(verse.meaning)}</div>
+            `;
+
+            // Display wisdom
+            document.getElementById('wisdom-output').innerHTML = `
+                <div class="wisdom-title">💡 How This Applies To Your Situation</div>
+                <div class="wisdom-text">${escapeHtml(data.gita_wisdom)}</div>
+            `;
+
+            // Display suggestions
+            let suggestionsHtml = '<div class="suggestions-title">✨ Practical Suggestions To Overcome Your Challenge</div><ul class="suggestions-list">';
+            data.practical_suggestions.forEach(suggestion => {
+                suggestionsHtml += `<li>${escapeHtml(suggestion)}</li>`;
+            });
+            suggestionsHtml += '</ul>';
+            document.getElementById('suggestions-output').innerHTML = suggestionsHtml;
+
+            // Render reflection question
+            const question = data.reflection_question || (data.suggested_verse && data.suggested_verse.reflection_question) || '';
+            if (question) {
+                document.getElementById('reflection-output').innerHTML = `
+                    <div class="reflection-title">🪔 Reflection Question</div>
+                    <div class="reflection-text">${escapeHtml(question)}</div>
+                `;
+            } else {
+                document.getElementById('reflection-output').innerHTML = '';
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
